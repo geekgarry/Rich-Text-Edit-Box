@@ -1,0 +1,336 @@
+<!DOCTYPE html>
+<html lang="en">
+
+	<head>
+		<meta charset="UTF-8">
+		<meta name="viewport" content="width=device-width,initial-scale=1,minimum-scale=1,maximum-scale=1,user-scalable=no" />
+		<title>富文本编辑框</title>
+		<style type="text/css">
+			[contentEditable=true]:empty:not(:focus):before {
+				content: attr(data-text);
+				color: #eee;
+			}
+			
+			* {
+				margin: 0px;
+				padding: 0px;
+				box-sizing: border-box;
+				list-style: none;
+				outline: none;
+			}
+			
+			#app {
+				position: fixed;
+				top: 0px;
+				left: 0px;
+				right: 0px;
+				bottom: 0px;
+				margin: auto;
+				width: 700px;
+				height: 600px;
+				box-shadow: 0px 0px 10px 0px rgba(99,184,255, 0.3);
+				border-radius: 10px;
+				overflow: hidden;
+				font-size: 17px;
+			}
+			
+			#import {
+				color: #363636;
+				padding: 10px 20px;
+				width: 700px;
+				height: 500px;
+				position: absolute;
+				top: 70px;
+				border-top: 1px solid #eee;
+				overflow-y: scroll;
+				overflow-X: hidden;
+			}
+			
+			#import img{
+				width: 600px;
+				margin: 100px;
+			}
+			
+			#control {
+				width: 700px;
+				height: 35px;
+				position: absolute;
+				top: 0px;
+			}
+			#TextSizeDiv{
+				position: absolute;
+				left: 320px;
+				top:5px;
+				font-size: 15px;
+			}
+			#FontDiv{
+				position: absolute;
+				left: 410px;
+				top:5px;
+				font-size: 15px;
+			}
+			#control>li {
+				float: left;
+				width: 30px;
+				height: 30px;
+				position: relative;
+			}
+			
+			#control>li>img {
+				width: 20px;
+				height: 20px;
+				margin:0 15px;
+				margin-top: 5px;
+			}
+			
+			#control>li>input {
+				opacity: 0;
+				position: absolute;
+				width: 30px;
+				height: 30px;
+				top: 0px;
+				left: 0px;
+			}
+			#control2 {
+				width: 700px;
+				height: 30px;
+				position: absolute;
+				top: 40px;
+			}
+			#control2>li {
+				float: left;
+				width: 30px;
+				height: 30px;
+				position: relative;
+			}
+			
+			#control2>li>img {
+				width: 20px;
+				height: 20px;
+				margin:0 15px;
+			}
+			
+			#control2>li>input {
+				opacity: 0;
+				position: absolute;
+				width: 30px;
+				height: 30px;
+				top: 0px;
+				left: 0px;
+			}
+			.colorblock{
+				display: block;
+				width: 20px;
+				height: 20px;
+				margin:0 15px;
+			}
+		</style>
+	</head>
+
+	<body>
+		<div id="app">
+			<ul id="control">
+				<li id="Strik"><img src="./icons/加粗.png" alt="加粗" /></li>
+				<li id="Italic"><img src="./icons/斜体.png" alt="斜体" /></li>
+				<li id="Underline"><img src="./icons/下划线.png"/></li>
+				<li id="StrikeThrough"><img src="./icons/删除线.png"/></li>
+				<li id="JustifyLeft"><img src="./icons/左对齐.png" alt="左对齐"></li>
+				<li id="JustifyCenter"><img src="./icons/居中对齐.png" alt="居中"></li>
+				<li id="JustifyRight"><img src="./icons/右对齐.png" alt="右对齐"></li>
+				<li id="JustifyFull"><img src="./icons/两端对齐.png" alt="两端对齐"></li>
+				<li id="JustifyTextIndent"><img src="./icons/首行缩进.png" alt="右缩进"></li>
+				<li><img src="./icons/pic.png" alt="添加图片" /><input type="file" id="Img"/></li>
+				<div id="TextSizeDiv">
+					<select id="textSizeSelector">
+						<option value="1">一号字体</option>
+						<option value="3">三号字体</option>
+						<option value="4">四号字体</option>
+						<option value="5">五号字体</option>
+						<option value="6">六号字体</option>
+						<option value="7">七号字体</option>
+					</select>
+				</div>
+				<div id="FontDiv">
+					<select id="fontSelector">
+						<option value="宋体">宋体</option>
+						<option value="微软雅黑">微软雅黑</option>
+						<option value="楷体">楷体</option>
+						<option value="黑体">黑体</option>
+						<option value="华文行楷">华文行楷</option>
+						<option value="等线">等线</option>
+						<option value="Times New Roman">新罗马</option>
+					</select>
+				</div>
+			</ul>
+			<ul id="control2">
+				<li><a href="javascript:void(0)" class="colorblock" data-command='foreColor' data-value="red" onclick="changeStyle(this.dataset)" style="background-color: red"></a></li>
+				<li><a href="javascript:void(0)" class="colorblock" data-command='foreColor' data-value="black" onclick="changeStyle(this.dataset)" style="background-color: black"></a></li>
+				<li><a href="javascript:void(0)" class="colorblock" data-command='foreColor' data-value="orange" onclick="changeStyle(this.dataset)" style="background-color: orange"></a></li>
+				<li><a href="javascript:void(0)" class="colorblock" data-command='foreColor' data-value="yellow" onclick="changeStyle(this.dataset)" style="background-color: yellow"></a></li>
+				<li><a href="javascript:void(0)" class="colorblock" data-command='foreColor' data-value="green" onclick="changeStyle(this.dataset)" style="background-color: green"></a></li>
+				<li><a href="javascript:void(0)" class="colorblock" data-command='foreColor' data-value="cyan" onclick="changeStyle(this.dataset)" style="background-color: cyan"></a></li>
+				<li><a href="javascript:void(0)" class="colorblock" data-command='foreColor' data-value="#6ABEF6" onclick="changeStyle(this.dataset)" style="background-color: #6ABEF6"></a></li>
+				<li><a href="javascript:void(0)" class="colorblock" data-command='foreColor' data-value="purple" onclick="changeStyle(this.dataset)" style="background-color: purple"></a></li>
+				<li><a href="javascript:void(0)" class="colorblock" data-command='foreColor' data-value="#C7C6C6" onclick="changeStyle(this.dataset)" style="background-color: #C7C6C6"></a></li>
+				<li><a href="javascript:void(0)" class="colorblock" data-command='foreColor' data-value="#8AF09B" onclick="changeStyle(this.dataset)" style="background-color: #8AF09B"></a></li>
+			</ul>
+			<div id="import" contenteditable="true" data-text="输入留言"></div>
+		</div>
+	</body>
+
+</html>
+<script src="js/jquery-3.3.1.js"></script>
+<script type="text/javascript">
+	
+	function getStyle(dom){
+		//获取光标位置的元素
+		var tagName = dom.prop("tagName");
+		if(tagName != "DIV"){
+			if(tagName=="I"){
+				$("#Italic>img").attr("src","./icons/斜体@.png")
+			}else if(tagName=="B"){
+				$("#Strik>img").attr("src","./icons/加粗@.png")
+			}else if(tagName=="U"){
+				$("#Underline>img").attr("src","./icons/下划线@.png")
+			}else if(tagName=="STRIKE"){
+				$("#StrikeThrough>img").attr("src","./icons/删除线@.png")
+			}
+			getStyle(dom.parent());
+		}
+	}
+	
+	$("#import").click(function(e){
+        // 设置最后光标对象
+        var dom = $(getSelection().getRangeAt(0).endContainer.parentElement);
+        clearStyle();
+		//dom = $(e.target)
+		getStyle(dom)
+	})
+	
+	function clearStyle(){
+		//重置所有样式
+		$("#Strik>img").attr("src","./icons/加粗.png")
+		$("#Italic>img").attr("src","./icons/斜体.png")
+		$("#Underline>img").attr("src","./icons/下划线.png")
+		$("#StrikeThrough>img").attr("src","./icons/删除线.png")
+		$("#JustifyCenter>img").attr("src","./icons/居中对齐.png")
+	}
+	$("#import").focus();
+	
+	$("#Strik").click(function() {
+		//加粗
+		document.execCommand("bold", false, null);
+		if($("#Strik>img").attr("src") == "./icons/加粗.png"){
+			$("#Strik>img").attr("src","./icons/加粗@.png")
+		}else{
+			$("#Strik>img").attr("src","./icons/加粗.png")
+		}
+		$("#import").focus();
+	});
+	$("#Italic").click(function() {
+		//斜体
+		document.execCommand('italic',true,null)
+		if($("#Italic>img").attr("src") == "./icons/斜体.png"){
+			$("#Italic>img").attr("src","./icons/斜体@.png")
+		}else{
+			$("#Italic>img").attr("src","./icons/斜体.png")
+		}
+		$("#import").focus();
+	})
+	
+	$("#Underline").click(function(){
+		//下划线
+		document.execCommand('underline',true,null)
+		if($("#Underline>img").attr("src") == "./icons/下划线.png"){
+			$("#Underline>img").attr("src","./icons/下划线@.png")
+		}else{
+			$("#Underline>img").attr("src","./icons/下划线.png")
+		}
+		$("#import").focus();
+	})
+	
+	$("#StrikeThrough").click(function(){
+		//删除线
+		document.execCommand('strikeThrough',true,null)
+		if($("#StrikeThrough>img").attr("src") == "./icons/删除线.png"){
+			$("#StrikeThrough>img").attr("src","./icons/删除线@.png")
+		}else{
+			$("#StrikeThrough>img").attr("src","./icons/删除线.png")
+		}
+		$("#import").focus();
+	})
+	$("#JustifyCenter").click(function(){
+		//居中对齐
+		document.execCommand('justifycenter',true,null)
+		/*if($("#JustifyCenter>img").attr("src") == "./icons/居中对齐.png"){
+			$("#JustifyCenter>img").attr("src","./icons/居中对齐@.png")
+		}else{
+			$("#JustifyCenter>img").attr("src","./icons/居中对齐.png")
+		}*/
+		$("#import").focus();
+	})
+	$("#JustifyLeft").click(function(){
+		//左对齐
+		document.execCommand('justifyleft',true,null)
+		$("#import").focus();
+	})
+	$("#JustifyRight").click(function(){
+		//右对齐
+		document.execCommand('justifyright',true,null)
+		$("#import").focus();
+	})
+	$("#JustifyFull").click(function(){
+		//右对齐
+		document.execCommand('JustifyFull',true,'2em')
+		$("#import").focus();
+	})
+	$("#JustifyTextIndent").click(function(){
+		//右缩进2字符
+		document.execCommand('Indent',true,'2em')
+		$("#import").focus();
+	})
+	var txtSizeSelector=$("#textSizeSelector");
+	txtSizeSelector.change(function(){
+		var textSizeNum =txtSizeSelector.find('option:selected').val();//attr("title");
+		console.log(textSizeNum);
+		document.execCommand('fontSize',false,textSizeNum)
+	})
+	var txtfontSelector=$("#fontSelector");
+	txtfontSelector.change(function(){
+		var textFontStyle =txtfontSelector.find('option:selected').val();//attr("title");
+		console.log(textFontStyle);
+		document.execCommand('fontName',true,textFontStyle)
+	})
+	getBase64($("#Img")[0],function(file,base){
+		//添加图片
+		document.execCommand('insertImage',true,base);
+		clearStyle();
+	})
+	
+	function getBase64(input, fn) {
+		if(typeof(FileReader) === 'undefined') {
+			$.hint("warn","抱歉，你的浏览器不支持 FileReader，请更换浏览器再进行操作！");
+			input.setAttribute('disabled', 'disabled');
+		} else {
+			input.addEventListener('change', function() {
+				var file = input.files[0];
+				if(!/image\/\w+/.test(file.type)) {
+					$.hint("warn","请确保文件为图像类型");
+					return false;
+				}
+				if(file.size > 1020 * 1020 * 4) {
+					$.hint("warn","照片过大 请重新选择照片");
+					return false;
+				}
+				var reader = new FileReader();
+				reader.readAsDataURL(file);
+				reader.onload = function(e) {
+					fn(file, this.result);
+				}
+			}, false)
+		}
+	};
+	const changeStyle = data => {
+    	data.value ? document.execCommand(data.command, false, data.value) : document.execCommand(data.command, false, null)
+	}
+</script>
