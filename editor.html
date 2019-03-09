@@ -5,6 +5,7 @@
 		<meta charset="UTF-8">
 		<meta name="viewport" content="width=device-width,initial-scale=1,minimum-scale=1,maximum-scale=1,user-scalable=no" />
 		<title>富文本编辑框</title>
+		<link rel="stylesheet" type="text/css" href="css/zzsc.css">
 		<style type="text/css">
 			[contentEditable=true]:empty:not(:focus):before {
 				content: attr(data-text);
@@ -28,10 +29,11 @@
 				margin: auto;
 				width: 700px;
 				height: 600px;
-				box-shadow: 0px 0px 10px 0px rgba(99,184,255, 0.3);
+				box-shadow: 0px 0px 10px 0px rgba(30,144,255, 0.3);
 				border-radius: 10px;
 				overflow: hidden;
 				font-size: 17px;
+				background: #DBDBDB;
 			}
 			
 			#import {
@@ -44,11 +46,12 @@
 				border-top: 1px solid #eee;
 				overflow-y: scroll;
 				overflow-X: hidden;
+				background: #fefefe;
 			}
 			
 			#import img{
 				width: 600px;
-				margin: 100px;
+				margin: 10px auto;
 			}
 			
 			#control {
@@ -56,18 +59,17 @@
 				height: 35px;
 				position: absolute;
 				top: 0px;
+				left: 10px;
 			}
 			#TextSizeDiv{
 				position: absolute;
-				left: 320px;
+				right: 110px;
 				top:5px;
-				font-size: 15px;
 			}
 			#FontDiv{
 				position: absolute;
-				left: 410px;
+				right: 25px;
 				top:5px;
-				font-size: 15px;
 			}
 			#control>li {
 				float: left;
@@ -79,7 +81,7 @@
 			#control>li>img {
 				width: 20px;
 				height: 20px;
-				margin:0 15px;
+				margin-left:5px;
 				margin-top: 5px;
 			}
 			
@@ -124,22 +126,53 @@
 				height: 20px;
 				margin:0 15px;
 			}
+			.formrow{
+				width: 88%;
+				height: 35px;
+				margin: 6px auto;
+				text-align: center;
+			}
+			#linurl{
+				width: 250px;
+				height:33px;
+				border-radius: 8px;
+				border: 0px;
+			}
+			#cancelbtn{
+				width: 60px;
+				height:33px;
+				border-radius: 8px;
+				border: 0px;
+				margin: 5px auto;
+			}
+			#okbtn{
+				width: 60px;
+				height:33px;
+				border-radius: 8px;
+				border: 0px;
+				margin: 5px auto;
+			}
 		</style>
 	</head>
 
 	<body>
 		<div id="app">
 			<ul id="control">
+				<li id="CodeStyle"><img src="./icons/代码.png" alt="代码" /></li>
 				<li id="Strik"><img src="./icons/加粗.png" alt="加粗" /></li>
 				<li id="Italic"><img src="./icons/斜体.png" alt="斜体" /></li>
 				<li id="Underline"><img src="./icons/下划线.png"/></li>
 				<li id="StrikeThrough"><img src="./icons/删除线.png"/></li>
 				<li id="JustifyLeft"><img src="./icons/左对齐.png" alt="左对齐"></li>
-				<li id="JustifyCenter"><img src="./icons/居中对齐.png" alt="居中"></li>
+				<li id="JustifyCenter"><img src="./icons/居中对齐.png" alt="居中对齐"></li>
 				<li id="JustifyRight"><img src="./icons/右对齐.png" alt="右对齐"></li>
 				<li id="JustifyFull"><img src="./icons/两端对齐.png" alt="两端对齐"></li>
 				<li id="JustifyTextIndent"><img src="./icons/首行缩进.png" alt="右缩进"></li>
+				<li id="TextBackground"><img src="./icons/文字背景.png" alt="文字背景色"></li>
 				<li><img src="./icons/pic.png" alt="添加图片" /><input type="file" id="Img"/></li>
+				<li><img src="./icons/上传视频.png" alt="上传视频" title="上传视频" /></li>
+				<li><img src="./icons/上传文件.png" alt="上传文件" title="上传文件" /></li>
+				<li id="CreateLink" data-toggle="modal" data-target="#myModal"><img id="CreateLinkImg" src="./icons/添加链接.png" alt="添加链接" title="添加链接" /></li>
 				<div id="TextSizeDiv">
 					<select id="textSizeSelector">
 						<option value="1">一号字体</option>
@@ -173,13 +206,27 @@
 				<li><a href="javascript:void(0)" class="colorblock" data-command='foreColor' data-value="purple" onclick="changeStyle(this.dataset)" style="background-color: purple"></a></li>
 				<li><a href="javascript:void(0)" class="colorblock" data-command='foreColor' data-value="#C7C6C6" onclick="changeStyle(this.dataset)" style="background-color: #C7C6C6"></a></li>
 				<li><a href="javascript:void(0)" class="colorblock" data-command='foreColor' data-value="#8AF09B" onclick="changeStyle(this.dataset)" style="background-color: #8AF09B"></a></li>
+				<li><a href="javascript:void(0)" class="colorblock" data-command='foreColor' data-value="white" onclick="changeStyle(this.dataset)" style="background-color: white"></a></li>
 			</ul>
-			<div id="import" contenteditable="true" data-text="输入留言"></div>
+			<div id="import" contenteditable="true" data-text="输入文本信息"></div>
+		</div>
+		<div class="modal fade" id="myModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+		   <div class="modal-dialog">
+			  <div class="modal-content">
+			  	<div class="modal-header">
+					<button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>
+				 </div>
+				 <div class="formrow">链接：<input type="text" name="" id="linurl" placeholder="输入链接" autofocus="true"></div>
+				 <div class="formrow"><input type="button" name="" id="cancelbtn" data-dismiss="modal" aria-hidden="true" value="取消">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<input type="button" name="" id="okbtn" value="确认"></div>
+			  </div>
+			</div>
 		</div>
 	</body>
 
 </html>
 <script src="js/jquery-3.3.1.js"></script>
+<script src="js/jquery-1.8.2-min.js" type="text/javascript" charset="utf-8" async defer></script>
+<script src="js/modal.js"></script>
 <script type="text/javascript">
 	
 	function getStyle(dom){
@@ -287,6 +334,38 @@
 	$("#JustifyTextIndent").click(function(){
 		//右缩进2字符
 		document.execCommand('Indent',true,'2em')
+		$("#import").focus();
+	})
+	$("#TextBackground").click(function(){
+		//设置背景色
+		document.execCommand('BackColor',true,"yellow")
+		if($("#TextBackground>img").attr("src") == "./icons/文字背景.png"){
+			$("#TextBackground>img").attr("src","./icons/文字背景@.png")
+		}else{
+			$("#TextBackground>img").attr("src","./icons/文字背景.png")
+		}
+		$("#import").focus();
+	})
+	var selection;
+	window.onselect = selectText;
+	function selectText()
+	{
+		/*document.onselectionchange = function() {
+  		console.log('选中');
+  		};*/
+	 	selection = document.getSelection();
+	 	alert("select event detected!");
+	}
+	$("#CreateLink").click(function(){
+		$('#CreateLinkImg').trigger('click');
+		//$("#import").focus();
+		//-> if document.activeElement is textarea then saveCaretPosition()
+		//$("#okbtn").onclick = -> restoreSavedCaretPosition()
+	})
+	$("#okbtn").click(function(){
+		//文本转为超链接
+		var linkurl=$("#linurl").val();
+		document.execCommand('CreateLink',true,linkurl)
 		$("#import").focus();
 	})
 	var txtSizeSelector=$("#textSizeSelector");
